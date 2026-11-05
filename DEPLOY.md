@@ -4,17 +4,24 @@
 
 ## 1. Проект на Vercel
 
-1. Vercel → Add New → Project → импортировать репозиторий `danvolsky-source/normot-mcp`.
-2. Framework Preset: **Other**. Build Command и Output Directory оставить пустыми. Node.js 22.
-3. Deploy. После деплоя проверить:
-   - `https://<проект>.vercel.app/` отдаёт JSON с описанием сервера;
-   - `MCP_URL=https://<проект>.vercel.app/mcp npm run smoke` проходит все вызовы.
+Проект `normot-mcp` в команде «Dan's projects» создан 05.11.2026 (Framework: Other, Node.js 22). Первый деплой сделан из файлов, без привязки к Git: у приложения Vercel на GitHub нет доступа к этому репозиторию.
+
+Чтобы каждый push в `main` деплоился сам:
+
+1. GitHub → Settings → Applications → Vercel → Configure → Repository access → добавить `normot-mcp`.
+2. Vercel → проект `normot-mcp` → Settings → Git → Connect → `danvolsky-source/normot-mcp`.
+
+Адрес `*.vercel.app` закрыт Vercel Authentication (так в команде по умолчанию); открыт только свой домен.
 
 ## 2. Поддомен mcp.normot.co.il
 
-1. Vercel → проект → Settings → Domains → добавить `mcp.normot.co.il`.
-2. У регистратора/в DNS normot.co.il добавить запись, которую покажет Vercel (обычно `CNAME mcp → cname.vercel-dns.com`).
-3. Проверить: `MCP_URL=https://mcp.normot.co.il/mcp npm run smoke`.
+Домен уже добавлен в проект. DNS normot.co.il обслуживает sitesdepot (ns1/ns2.sitesdepot.com), поэтому запись добавляется там:
+
+```
+mcp   CNAME   816402a1d68947c1.vercel-dns-016.com.
+```
+
+(запасной вариант от Vercel: `cname.vercel-dns.com.`). Сертификат Vercel выпустит сам. Проверить: `MCP_URL=https://mcp.normot.co.il/mcp npm run smoke`.
 
 ## 3. Проверка в Claude
 
@@ -22,16 +29,9 @@ claude.ai → Settings → Connectors → Add custom connector → `https://mcp.
 
 ## 4. Официальный реестр MCP
 
-Имя в `server.json`: `io.github.danvolsky-source/normot` (вход через GitHub, без DNS).
+Имя в `server.json`: `io.github.danvolsky-source/normot`. Публикация идёт из GitHub Actions через OIDC, без паролей и токенов: Actions → **Publish to MCP Registry** → Run workflow. Workflow сначала проверяет, что https://mcp.normot.co.il/mcp отвечает, потом валидирует и публикует `server.json`.
 
-```sh
-# установить mcp-publisher: https://github.com/modelcontextprotocol/registry (раздел Releases)
-mcp-publisher validate          # проверить server.json
-mcp-publisher login github      # вход через браузер, аккаунт danvolsky-source
-mcp-publisher publish
-```
-
-Перед публикацией сверить шаги с актуальной документацией реестра: он пока в режиме preview. При каждом новом релизе поднимать `version` в `server.json` и `package.json`.
+При каждом новом релизе поднимать `version` в `server.json` и `package.json`, затем снова запускать workflow.
 
 Позже можно перейти на имя `il.co.normot/normot`: для этого нужно подтвердить домен (TXT-запись в DNS normot.co.il), порядок описан в документации реестра.
 
