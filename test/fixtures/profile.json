@@ -1,0 +1,162 @@
+{
+ "data": {
+  "generated": "2026-11-05 18:25",
+  "uses": [
+   {
+    "code": "accommodation",
+    "title_he": "אכסון ומלונאות"
+   },
+   {
+    "code": "healthcare",
+    "title_he": "בריאות"
+   },
+   {
+    "code": "food-service",
+    "title_he": "הסעדה — מסעדות ובתי אוכל"
+   },
+   {
+    "code": "assembly",
+    "title_he": "התקהלות"
+   },
+   {
+    "code": "education",
+    "title_he": "חינוך"
+   }
+  ],
+  "stages": [
+   {
+    "code": "feasibility",
+    "title_he": "היתכנות ותכנון ראשוני"
+   },
+   {
+    "code": "design",
+    "title_he": "תכנון מפורט"
+   },
+   {
+    "code": "permit",
+    "title_he": "רישוי ובקשה להיתר"
+   },
+   {
+    "code": "execution",
+    "title_he": "ביצוע באתר"
+   },
+   {
+    "code": "completion",
+    "title_he": "גמר וטופס 4"
+   }
+  ],
+  "sites": [
+   {
+    "code": "airport-noise",
+    "title_he": "מגרש בתחום מתחם רעש כלי טיס"
+   },
+   {
+    "code": "near-airport",
+    "title_he": "מגרש בסביבת שדה תעופה או מנחת"
+   },
+   {
+    "code": "coastal",
+    "title_he": "מגרש בתחום הסביבה החופית"
+   },
+   {
+    "code": "watercourse",
+    "title_he": "מגרש בעורק ניקוז, בנחל או ברצועת מגן"
+   },
+   {
+    "code": "water-line",
+    "title_he": "מגרש בתוואי קו מים"
+   }
+  ],
+  "features": [
+   {
+    "code": "pool",
+    "title_he": "בריכת שחייה"
+   },
+   {
+    "code": "elevator",
+    "title_he": "מעלית או דרגנוע"
+   },
+   {
+    "code": "gas",
+    "title_he": "מיתקן גז"
+   },
+   {
+    "code": "generator",
+    "title_he": "גנרטור חירום"
+   },
+   {
+    "code": "fuel-storage",
+    "title_he": "אחסנת דלק ונפט"
+   }
+  ],
+  "roles": [
+   {
+    "code": "insurer",
+    "title_he": "מבטח",
+    "kind": "reader"
+   },
+   {
+    "code": "bank",
+    "title_he": "בנק מלווה",
+    "kind": "reader"
+   },
+   {
+    "code": "buyer",
+    "title_he": "רוכש",
+    "kind": "reader"
+   },
+   {
+    "code": "authority",
+    "title_he": "רשות רישוי",
+    "kind": "reader"
+   },
+   {
+    "code": "architect",
+    "title_he": "אדריכל",
+    "kind": "executor"
+   }
+  ],
+  "areas": [
+   {
+    "code": "spaces",
+    "title_he": "חדרים, חצרות ומידות"
+   },
+   {
+    "code": "egress",
+    "title_he": "מדרגות ודרכי מילוט"
+   },
+   {
+    "code": "fire",
+    "title_he": "בטיחות אש"
+   },
+   {
+    "code": "protected-space",
+    "title_he": "מרחבים מוגנים ומקלטים"
+   },
+   {
+    "code": "accessibility",
+    "title_he": "נגישות"
+   }
+  ],
+  "cities": [
+   {
+    "slug": "jerusalem",
+    "name_he": "ירושלים"
+   },
+   {
+    "slug": "tel-aviv",
+    "name_he": "תל אביב-יפו"
+   },
+   {
+    "slug": "haifa",
+    "name_he": "חיפה"
+   }
+  ],
+  "meta": {
+   "units": 120594,
+   "documents": 1337,
+   "registry_done": 274,
+   "registry_total": 283
+  }
+ }
+}

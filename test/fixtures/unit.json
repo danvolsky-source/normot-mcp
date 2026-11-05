@@ -1,0 +1,125 @@
+{
+  "id": "u-ac8-t1-lift-other",
+  "statement_he": "מיתקן הרמה אחר –\nא. פרט 1א עד ה.\nב. אמצעי לעצירת מהלך פתיחתו.\nג. מנגנון אוטומטי לעצירה מיידית של פעולתו, כשייתקל בעצם המתנגד בכוח של 15 ק״ג ומעלה.\nד. אפשרות להפעלה ידנית במקרה של תקלה במנגנון הפעלה.\nה. מעקה שימנע החלקה או נפילה ממנו.",
+  "applicability": "מיתקן הרמה אחר שאינו כבש",
+  "authority": "accessibility",
+  "scope": "accessible-lift",
+  "kind": "obligation",
+  "effective_from": null,
+  "effective_to": null,
+  "trust": "verified_primary",
+  "variant_of": null,
+  "section": "נגישות תחבורה ציבורית, תוספת 1 פרט 2",
+  "retrieved_at": "2026-08-15",
+  "document": {
+    "id": "doc-ac08-transport-2003",
+    "title": "תקנות שוויון זכויות לאנשים עם מוגבלות (הסדרת נגישות לשירותי תחבורה ציבורית), התשס״ג–2003",
+    "registry": "AC-08",
+    "source_kind": "law",
+    "in_force": true,
+    "effective_from": "2003",
+    "source_url": "https://he.wikisource.org/wiki/תקנות_שוויון_זכויות_לאנשים_עם_מוגבלות_(הסדרת_נגישות_לשירותי_תחבורה_ציבורית)",
+    "last_edition": null
+  },
+  "params": [
+    {
+      "name": "lift_obstacle_stop_force",
+      "op": ">=",
+      "value": 15,
+      "unit": "kg",
+      "condition": "כוח התנגדות של עצם שגורם לעצירה מיידית של מיתקן ההרמה",
+      "vtext": "≥ 15 ק״ג",
+      "vhtml": "<span class=\"mv\"><bdi dir=\"ltr\" class=\"mv-n num\">≥ 15</bdi><span class=\"mv-u unit\">ק״ג</span></span>"
+    }
+  ],
+  "standards": null,
+  "links": null,
+  "exceptions": null,
+  "text_fidelity": {
+    "coverage": 1,
+    "method": "reshumot-word-check",
+    "checked_on": "2026-10-29",
+    "verbatim": true
+  },
+  "overridden_by": null,
+  "disputes": null,
+  "tables": null,
+  "evidence": {
+    "text_state": "extracted_quote",
+    "text_state_he": "לשון המקור כפי שהיא בוויקיטקסט — זהה מילה במילה לחילוץ; לא נבדקה מול הפרסום הרשמי",
+    "check_level_he": "העתק (ויקיטקסט) — לא נבדק מול הפרסום הרשמי",
+    "published_in": "ק״ת תשס״ג, 756; תיקונים תשע״ו 2299, תשע״ז 170 — נוסח משולב ויקיטקסט",
+    "document_kind": "law",
+    "document_kind_he": "חקיקה",
+    "text_source": {
+      "url": "https://he.wikisource.org/wiki/תקנות_שוויון_זכויות_לאנשים_עם_מוגבלות_(הסדרת_נגישות_לשירותי_תחבורה_ציבורית)",
+      "label_he": "ויקיטקסט",
+      "publisher": "ויקיטקסט",
+      "retrieved_at": "2026-08-15",
+      "is_copy": true,
+      "copy_host_he": "ויקיטקסט",
+      "reading": "raw-wikitext",
+      "reading_he": "נלקח מוויקיטקסט"
+    },
+    "snapshot": {
+      "sha256": "cfd2644f9c62cef49caf7764e2903f5b79bb4dbb1c50fee379b8883debcf62d7",
+      "bytes": 88671,
+      "fetched_at": "2026-08-15T17:14:36.176911+00:00",
+      "same_day_as_text": true
+    },
+    "fidelity": {
+      "method": "reshumot-word-check",
+      "method_he": null,
+      "coverage": 1,
+      "checked_on": "2026-10-29",
+      "source_ref": "ק״ת 6244, 7716, 7730",
+      "checked_against_he": "ק״ת 6244",
+      "verbatim": true
+    },
+    "print_check": {
+      "code": "official_words",
+      "against_print": true,
+      "label_he": "כל מילות הנוסח נמצאו בפרסומים הרשמיים ברשומות; כל הבדל נבדק ידנית",
+      "error_rate_note_he": "שיעור הטעויות נמדד במדגם מול הדפוס: https://normot.co.il/rishuy"
+    },
+    "cite": {
+      "url": "https://normot.co.il/u/u-ac8-t1-lift-other",
+      "id": "u-ac8-t1-lift-other",
+      "text_he": "תקנות שוויון זכויות לאנשים עם מוגבלות (הסדרת נגישות לשירותי תחבורה ציבורית), התשס״ג–2003, נגישות תחבורה ציבורית, תוספת 1 פרט 2 — נורמות (NORMOT), https://normot.co.il/u/u-ac8-t1-lift-other (נבדק 29.10.2026)",
+      "source_url": "https://he.wikisource.org/wiki/תקנות_שוויון_זכויות_לאנשים_עם_מוגבלות_(הסדרת_נגישות_לשירותי_תחבורה_ציבורית)",
+      "rule_he": "מותר לצטט נורמה בודדת או מספר נורמות, עם קישור לכתובת הקבועה שלהן; הנוסח המחייב הוא הפרסום הרשמי",
+      "terms": "https://normot.co.il/terms"
+    },
+    "text_flag": null,
+    "check": {
+      "kind_he": null,
+      "checked_at": "2026-08-15",
+      "db_label_he": "העתק (ויקיטקסט)"
+    },
+    "row": null,
+    "disputes": null,
+    "tables_check_he": null,
+    "tables_pending": 0,
+    "gates": null
+  },
+  "print_check": {
+    "code": "official_words",
+    "against_print": true,
+    "label_he": "כל מילות הנוסח נמצאו בפרסומים הרשמיים ברשומות; כל הבדל נבדק ידנית",
+    "error_rate_note_he": "שיעור הטעויות נמדד במדגם מול הדפוס: https://normot.co.il/rishuy"
+  },
+  "cite": {
+    "url": "https://normot.co.il/u/u-ac8-t1-lift-other",
+    "id": "u-ac8-t1-lift-other",
+    "text_he": "תקנות שוויון זכויות לאנשים עם מוגבלות (הסדרת נגישות לשירותי תחבורה ציבורית), התשס״ג–2003, נגישות תחבורה ציבורית, תוספת 1 פרט 2 — נורמות (NORMOT), https://normot.co.il/u/u-ac8-t1-lift-other (נבדק 29.10.2026)",
+    "source_url": "https://he.wikisource.org/wiki/תקנות_שוויון_זכויות_לאנשים_עם_מוגבלות_(הסדרת_נגישות_לשירותי_תחבורה_ציבורית)",
+    "rule_he": "מותר לצטט נורמה בודדת או מספר נורמות, עם קישור לכתובת הקבועה שלהן; הנוסח המחייב הוא הפרסום הרשמי",
+    "terms": "https://normot.co.il/terms"
+  },
+  "time_notes": null,
+  "official_sources": [
+    6244,
+    7716,
+    7730
+  ]
+}
