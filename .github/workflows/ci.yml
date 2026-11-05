@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Daily: catches changes in the NORMOT API contract that would break the tools.
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  live-smoke:
+    # Calls every tool against the live NORMOT API through a local server.
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Start local MCP server
+        run: |
+          npm run dev > server.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:8787/ >/dev/null && break; sleep 1; done
+      - run: npm run smoke
+        env:
+          MCP_URL: http://localhost:8787/mcp
+      - name: Server log
+        if: always()
+        run: cat server.log
