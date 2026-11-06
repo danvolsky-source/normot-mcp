@@ -4,12 +4,7 @@
 
 ## 1. Проект на Vercel
 
-Проект `normot-mcp` в команде «Dan's projects» создан 05.11.2026 (Framework: Other, Node.js 22). Первый деплой сделан из файлов, без привязки к Git: у приложения Vercel на GitHub нет доступа к этому репозиторию.
-
-Чтобы каждый push в `main` деплоился сам:
-
-1. GitHub → Settings → Applications → Vercel → Configure → Repository access → добавить `normot-mcp`.
-2. Vercel → проект `normot-mcp` → Settings → Git → Connect → `danvolsky-source/normot-mcp`.
+Проект `normot-mcp` в команде «Dan's projects» создан 05.11.2026 (Framework: Other, Node.js 22). 06.11.2026 к нему подключён репозиторий `danvolsky-source/normot-mcp`: каждый push в `main` деплоится в production, каждый PR получает preview-деплой.
 
 Адрес `*.vercel.app` закрыт Vercel Authentication (так в команде по умолчанию); открыт только свой домен.
 
