@@ -1,6 +1,6 @@
 {
   "name": "normot-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Remote MCP server for NORMOT (normot.co.il), a database of Israeli building norms",
   "license": "UNLICENSED",
   "private": true,
