@@ -15,7 +15,13 @@ import {
 } from "./shape.js";
 
 export const SERVER_NAME = "normot";
-export const SERVER_VERSION = "0.1.0";
+export const SERVER_VERSION = "0.1.1";
+
+/** Same icons as in server.json; served by the normot.co.il site. */
+export const ICONS = [
+  { src: "https://normot.co.il/apple-touch-icon.png", mimeType: "image/png", sizes: ["180x180"] },
+  { src: "https://normot.co.il/favicon.svg", mimeType: "image/svg+xml", sizes: ["any"] },
+];
 
 const INSTRUCTIONS = `NORMOT (normot.co.il) is a database of Israeli building and planning norms: laws, regulations, ministry and agency guidelines, municipal spatial guidelines (הנחיות מרחביות) and references to SII standards (ת"י) — about 120,000 norms, each with a permanent URL, its source document and section, dates in force, and how its text was checked against the printed source.
 
@@ -60,24 +66,49 @@ const profileShape = {
   stage: z
     .enum(["feasibility", "design", "permit", "execution", "completion", "operation"])
     .optional()
-    .describe("Project stage"),
-  status: z.enum(["new", "existing"]).optional().describe("New building or existing building"),
-  height_class: z.enum(["low", "high", "multistory"]).optional().describe("Building height class"),
-  track: z.enum(["standard", "short", "fast"]).optional().describe("Permit track"),
-  role: z.string().max(60).optional().describe("Whose obligations to show, e.g. a role code from list_profile_options"),
+    .describe(
+      "Project stage: feasibility (היתכנות ותכנון ראשוני), design (תכנון מפורט), permit (רישוי ובקשה להיתר), execution (ביצוע באתר), completion (גמר וטופס 4), operation (תפעול ותחזוקה). Omit = all stages",
+    ),
+  status: z.enum(["new", "existing"]).optional().describe("new = new building; existing = existing building"),
+  height_class: z
+    .enum(["low", "high", "multistory"])
+    .optional()
+    .describe("Building height class: low, high or multistory. Omit if unknown (no norm is excluded)"),
+  track: z
+    .enum(["standard", "short", "fast"])
+    .optional()
+    .describe("Permit track: standard, short or fast. Omit if unknown (no norm is excluded)"),
+  role: z
+    .string()
+    .max(60)
+    .optional()
+    .describe(
+      "Show the norms for one party, e.g. architect, developer, fire (fire safety consultant), authority: a role code from list_profile_options. Omit for all parties",
+    ),
   site: z
     .string()
     .max(500)
     .optional()
     .describe("Comma-separated plot condition codes that apply; 'none' = checked and none apply; omit = not checked"),
-  features: z.string().max(1000).optional().describe("Comma-separated project element codes, e.g. pool; omit = not checked"),
-  floor_area: z.number().nonnegative().optional().describe("Floor area, m²"),
-  building_height: z.number().nonnegative().optional().describe("Building height, m"),
-  storeys: z.number().int().nonnegative().optional(),
-  dwelling_units: z.number().int().nonnegative().optional(),
-  occupancy: z.number().int().nonnegative().optional().describe("Number of occupants"),
-  beds: z.number().int().nonnegative().optional(),
-  rooms: z.number().int().nonnegative().optional(),
+  features: z
+    .string()
+    .max(1000)
+    .optional()
+    .describe(
+      "Comma-separated project element codes from list_profile_options (features), e.g. pool; 'none' = checked and none apply; omit = not checked",
+    ),
+  floor_area: z.number().nonnegative().optional().describe("Floor area, m²; used for area thresholds in norms"),
+  building_height: z.number().nonnegative().optional().describe("Building height, m; used for height thresholds in norms"),
+  storeys: z.number().int().nonnegative().optional().describe("Number of storeys; used for thresholds in norms"),
+  dwelling_units: z.number().int().nonnegative().optional().describe("Number of dwelling units (apartments)"),
+  occupancy: z.number().int().nonnegative().optional().describe("Number of occupants; used for occupancy thresholds in norms"),
+  beds: z
+    .number()
+    .int()
+    .nonnegative()
+    .optional()
+    .describe("Number of beds, e.g. in a hotel, hospital or care home; used for thresholds in norms"),
+  rooms: z.number().int().nonnegative().optional().describe("Number of rooms; used for thresholds in norms"),
 };
 
 type Profile = { [K in keyof typeof profileShape]?: z.infer<(typeof profileShape)[K]> };
@@ -110,7 +141,13 @@ function pickProfile(args: Record<string, unknown>): Profile {
 
 export function createServer(): McpServer {
   const server = new McpServer(
-    { name: SERVER_NAME, version: SERVER_VERSION, title: "NORMOT — Israeli building norms" },
+    {
+      name: SERVER_NAME,
+      version: SERVER_VERSION,
+      title: "NORMOT — Israeli building norms",
+      websiteUrl: "https://normot.co.il",
+      icons: ICONS,
+    },
     { instructions: INSTRUCTIONS },
   );
 
@@ -122,7 +159,7 @@ export function createServer(): McpServer {
         "Search Israeli building and planning norms by Hebrew words (substring search over norm texts, sections and document titles; norms in force come first). Returns norms with their permanent URL; call get_norm for the full text and citation.",
       inputSchema: {
         query: z.string().min(2).max(200).describe("Hebrew search words, e.g. מעקה, ממ\"ד, רוחב מדרגות"),
-        limit: z.number().int().min(1).max(20).default(10),
+        limit: z.number().int().min(1).max(20).default(10).describe("How many norms to return, 1–20"),
         offset: z.number().int().min(0).max(100).default(0).describe("For the next page; at most 100 (no bulk export)"),
       },
       annotations: { title: "Search norms", ...READ_ONLY },
@@ -232,7 +269,11 @@ export function createServer(): McpServer {
         "For one norm and a project profile: does it apply, why (by use, authority, stage) and which conditions could change that.",
       inputSchema: {
         ...profileShape,
-        id: z.string().regex(/^u-[A-Za-z0-9._-]+$/).max(160).describe("Norm id"),
+        id: z
+          .string()
+          .regex(/^u-[A-Za-z0-9._-]+$/, "a norm id looks like u-rb01-preconditions")
+          .max(160)
+          .describe("Norm id from search_norms or project_requirements, e.g. u-rb01-preconditions"),
       },
       annotations: { title: "Why a norm applies", ...READ_ONLY },
     },
