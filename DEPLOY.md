@@ -42,9 +42,22 @@ claude.ai → Settings → Connectors → Add custom connector → `https://mcp.
 - MCP server (for AI assistants): https://mcp.normot.co.il/mcp — https://github.com/danvolsky-source/normot-mcp
 ```
 
-## 7. Замер через 30 дней
+## 7. Статистика
 
-Vercel → проект → Logs, фильтр `"evt":"mcp"`. Смотреть число `tools/call` в день и поле `client` у `initialize` (какие ИИ подключаются). Аргументы запросов не логируются.
+Логи Vercel на бесплатном тарифе живут недолго, поэтому сервер пишет дневные счётчики в базу NORMOT (Supabase, проект Tokef). Схема и функция записи: `db/mcp_stats.sql`.
+
+- `core.mcp_hits`: день, метод, инструмент, клиент (из `initialize`), User-Agent, число.
+- `core.mcp_search_hits`: текст запросов `search_norms` по дням. Другие аргументы не пишутся.
+- `core.mcp_bot_patterns`: шаблоны ботов-проверялок каталогов. Флаг `is_bot` считается при чтении во `core.v_mcp_hits`, список можно пополнять без деплоя.
+
+Переменные окружения в Vercel (без них статистика выключена): `NORMOT_STATS_URL` (адрес проекта Supabase), `NORMOT_STATS_ANON_KEY` (publishable key), `NORMOT_STATS_INGEST_KEY` (секрет; его sha256 лежит в `core.report_keys` под именем `mcp-ingest`).
+
+Главная метрика: вызовы инструментов не от ботов.
+
+```sql
+select day, tool, sum(n) from core.v_mcp_hits
+ where method = 'tools/call' and not is_bot group by 1, 2 order by 1 desc, 3 desc;
+```
 
 ## Поддержка
 
