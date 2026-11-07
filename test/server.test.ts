@@ -176,3 +176,47 @@ describe("shaping", () => {
     assert.match(shaped.tables.note, /normot\.co\.il/);
   });
 });
+
+describe("usage statistics", () => {
+  it("records method, tool, client and only the search_norms query", async () => {
+    const { collectEvents } = await import("../src/stats.js");
+    const events = collectEvents([
+      { jsonrpc: "2.0", id: 1, method: "initialize", params: { clientInfo: { name: "claude-ai", version: "1" } } },
+      { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "search_norms", arguments: { query: "מעקה" } } },
+      { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "get_norm", arguments: { id: "secret-ish" } } },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+    ]);
+    assert.deepEqual(events, [
+      { method: "initialize", client: "claude-ai" },
+      { method: "tools/call", tool: "search_norms", q: "מעקה" },
+      { method: "tools/call", tool: "get_norm" },
+      { method: "notifications/initialized" },
+    ]);
+  });
+
+  it("sends one RPC per request when configured, and nothing otherwise", async () => {
+    const { sendStats } = await import("../src/stats.js");
+    const saved = globalThis.fetch;
+    const calls: { url: string; body: any }[] = [];
+    globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
+      calls.push({ url: String(input), body: JSON.parse(String(init?.body)) });
+      return new Response("", { status: 204 });
+    }) as typeof fetch;
+    try {
+      await sendStats([{ method: "tools/list" }], "ua");
+      assert.equal(calls.length, 0);
+      process.env.NORMOT_STATS_URL = "https://db.example/";
+      process.env.NORMOT_STATS_ANON_KEY = "anon";
+      process.env.NORMOT_STATS_INGEST_KEY = "ingest";
+      await sendStats([{ method: "tools/list" }], "ua");
+      assert.equal(calls.length, 1);
+      assert.equal(calls[0]!.url, "https://db.example/rest/v1/rpc/core_mcp_hit");
+      assert.deepEqual(calls[0]!.body, { p_key: "ingest", p_ua: "ua", p_events: [{ method: "tools/list" }] });
+    } finally {
+      delete process.env.NORMOT_STATS_URL;
+      delete process.env.NORMOT_STATS_ANON_KEY;
+      delete process.env.NORMOT_STATS_INGEST_KEY;
+      globalThis.fetch = saved;
+    }
+  });
+});

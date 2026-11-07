@@ -1,10 +1,11 @@
 // Vercel Function: the MCP endpoint, served at /mcp (see vercel.json).
+import { waitUntil } from "@vercel/functions";
 import { handleMcp } from "../src/handler.js";
 
 export const maxDuration = 30;
 
 export function POST(request: Request): Promise<Response> {
-  return handleMcp(request);
+  return handleMcp(request, waitUntil);
 }
 export function GET(request: Request): Promise<Response> {
   return handleMcp(request);
