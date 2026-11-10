@@ -4,6 +4,10 @@
 
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { createServer, SERVER_NAME, SERVER_VERSION } from "./server.js";
+import { collectEvents, sendStats } from "./stats.js";
+
+/** Runs work after the response is sent (Vercel's waitUntil). Without it, the work is awaited. */
+export type Defer = (work: Promise<unknown>) => void;
 
 const MAX_BODY_BYTES = 64 * 1024;
 
@@ -56,7 +60,7 @@ export const INFO = {
   terms: "https://normot.co.il/terms",
 };
 
-export async function handleMcp(req: Request): Promise<Response> {
+export async function handleMcp(req: Request, defer?: Defer): Promise<Response> {
   if (req.method === "OPTIONS") return withCors(new Response(null, { status: 204 }));
 
   if (req.method !== "POST") {
@@ -93,6 +97,9 @@ export async function handleMcp(req: Request): Promise<Response> {
     await server.connect(transport);
     const res = await transport.handleRequest(req, { parsedBody: parsed });
     logCalls(parsed, req.headers.get("user-agent"), Date.now() - started, res.status);
+    const stats = sendStats(collectEvents(parsed), req.headers.get("user-agent"));
+    if (defer) defer(stats);
+    else await stats;
     return withCors(res);
   } catch (err) {
     console.error(JSON.stringify({ evt: "mcp_error", message: (err as Error).message }));
